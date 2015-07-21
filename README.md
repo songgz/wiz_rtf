@@ -23,7 +23,7 @@ Or install it yourself as:
 ## Usage
 ```ruby
     doc = WizRtf::Document.new do
-      text "学生综合素质报告", :align => :center, 'font-size' => 48
+      text "瀛︾敓缁煎悎绱犺川鎶ュ憡", :align => :center, 'font-size' => 48
       image('h:\eahey.png')
       page_break
       text "A Table Demo"
