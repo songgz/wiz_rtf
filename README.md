@@ -21,9 +21,19 @@ Or install it yourself as:
     $ gem install wiz_rtf
 
 ## Usage
-
-TODO: Write usage instructions here
-
+```ruby
+    doc = WizRtf::Document.new do
+      text "学生综合素质报告", :align => :center, 'font-size' => 48
+      image('h:\eahey.png')
+      page_break
+      text "A Table Demo"
+      table [[{content:'e',rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
+             [{content:'4',rowspan:3,colspan:2},8],[11]], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
+        add_row [1]
+      end
+    end
+    doc.save('c:\text.rtf')
+---
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.

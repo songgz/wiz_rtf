@@ -9,15 +9,15 @@ Gem::Specification.new do |spec|
   spec.authors       = ["songgz"]
   spec.email         = ["sgzhe@163.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{A gem for exporting Word Documents in ruby using the Microsoft Rich Text Format (RTF) Specification.}
+  spec.description   = %q{A gem for rtf.}
+  spec.homepage      = "https://github.com/songgz/wiz_rtf"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata['allowed_push_host'] = "https://rubygems.org"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
