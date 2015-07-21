@@ -6,19 +6,21 @@
 
 module WizRtf
   class Text
-    ALIGN_MAP = {left:'ql',center:'qc',right:'qr'}
-    FONT_MAP = {'font-size' => :fs}
+    TEXT_ALIGN_MAP = {left:'ql',center:'qc',right:'qr'}
 
     def initialize(str = '', styles = {})
       @str = str
-      @styles = {:align => :left,'font-size' => 24}.merge(styles)
+      @styles = {'text-align' => :left, 'font-size' => 24, 'font-bold' => false, 'font-style' => false, 'font-underline' => false }.merge(styles)
     end
 
     def render(io)
       io.group do
         io.cmd :pard
-        io.cmd ALIGN_MAP[@styles[:align]]
-        io.cmd FONT_MAP[@styles['font-size']]
+        io.cmd TEXT_ALIGN_MAP[@styles['text-align']]
+        io.cmd :fs, @styles['font-size']
+        io.cmd @styles['font-bold'] ? 'b' : 'b0'
+        io.cmd @styles['font-italic'] ? 'i' : 'i0'
+        io.cmd @styles['font-underline'] ? 'ul' : 'ulnone'
         io.txt @str
         io.cmd :par
       end
