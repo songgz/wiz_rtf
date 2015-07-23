@@ -9,14 +9,14 @@ module WizRtf
     attr_accessor :colspan, :rowspan, :content, :v_merge, :right_width
 
     def initialize(cell)
-      unless cell.is_a?(Hash)
-        @colspan = 1
-        @rowspan = 1
-        @content = cell
-      else
+      if cell.is_a?(Hash)
         @colspan = cell[:colspan] || 1
         @rowspan = cell[:rowspan] || 1
         @content = cell[:content] || ''
+      else
+        @colspan = 1
+        @rowspan = 1
+        @content = cell
       end
     end
 
@@ -36,7 +36,14 @@ module WizRtf
       io.cmd :brdrw10
       io.cmd  v_merge if v_merge
       io.cmd :cellx, right_width
-      io.txt content
+      contents = [@content] unless @content.is_a?(Array)
+      contents.each do |c|
+        if c.respond_to?(:render)
+          c.render(io)
+        else
+          io.txt c
+        end
+      end
       io.cmd :cell
     end
 

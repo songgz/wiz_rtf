@@ -15,6 +15,7 @@ module WizRtf
       font 2, 'fnil', '宋体', 2, 2
       color 0, 0, 0
       color 255, 0, 0
+      color 255, 0, 255
       block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
     end
 
@@ -46,7 +47,6 @@ module WizRtf
       @parts << WizRtf::Cmd.new(:par)
     end
 
-    #writes a page interruption (new page)
     def page_break
       @parts << WizRtf::Cmd.new(:page)
     end

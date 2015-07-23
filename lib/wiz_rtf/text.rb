@@ -10,7 +10,7 @@ module WizRtf
 
     def initialize(str = '', styles = {})
       @str = str
-      @styles = {'text-align' => :left, 'font-size' => 24, 'font-bold' => false, 'font-style' => false, 'font-underline' => false }.merge(styles)
+      @styles = {'text-align' => :left, 'font-size' => 24, 'font-bold' => false, 'font-italic' => false, 'font-underline' => false, 'foreground-color' => 1, 'background-color' => 0 }.merge(styles)
     end
 
     def render(io)
@@ -21,6 +21,10 @@ module WizRtf
         io.cmd @styles['font-bold'] ? 'b' : 'b0'
         io.cmd @styles['font-italic'] ? 'i' : 'i0'
         io.cmd @styles['font-underline'] ? 'ul' : 'ulnone'
+        io.cmd :cf, @styles['foreground-color']
+        io.cmd :cb, @styles['background-color']
+        io.cmd :chcfpat, @styles['foreground-color']
+        io.cmd :chcbpat, @styles['background-color']
         io.txt @str
         io.cmd :par
       end
