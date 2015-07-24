@@ -10,9 +10,9 @@ module WizRtf
       @fonts = []
       @colors = []
       @parts = []
-      font 0, 'fswiss', 'Arial', 0, 2
-      font 1, 'fmodern', 'Courier New', 0, 1
-      font 2, 'fnil', '宋体', 2, 2
+      font 'fswiss', 'Arial', 0, 2
+      font 'fmodern', 'Courier New', 0, 1
+      font 'fnil', '宋体', 2, 2
       color 0, 0, 0
       color 255, 0, 0
       color 255, 0, 255
@@ -23,15 +23,31 @@ module WizRtf
 
     end
 
-    def font(num, family, name, character_set = 0, prq = 2)
-      @fonts << WizRtf::Font.new(num, family, name, character_set, prq)
+    def font(name, family = nil,  character_set = 0, prq = 2)
+      unless index = @fonts.index {|f| f.name == name}
+        index = @fonts.size
+        p name
+        p opts = WizRtf::Font::FAMILIES.detect {|f| f[:name] == name}
+        @fonts << WizRtf::Font.new(index, opts[:name], opts[:family], opts[:character], opts[:prq])
+      end
+      index
     end
 
-    def color(red, green, blue)
-      @colors << WizRtf::Color.new(red, green, blue)
+    def color(*rgb)
+      color = WizRtf::Color.new(*rgb)
+      if index = @colors.index {|c| c.to_rgb_hex == color.to_rgb_hex}
+        index += 1
+      else
+        @colors << color
+        index = @colors.size
+      end
+      index
     end
 
-    def text(str, styles = {:align => :left})
+    def text(str, styles = {})
+      styles['foreground-color'] = color(styles['foreground-color']) if styles['foreground-color']
+      styles['background-color'] = color(styles['background-color']) if styles['background-color']
+      styles['font-family'] = font(styles['font-family']) if styles['font-family']
       @parts << WizRtf::Text.new(str, styles)
     end
 
