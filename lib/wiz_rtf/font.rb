@@ -6,29 +6,58 @@
 
 module WizRtf
   class Font
+    FAMILIES = {
+        default: 'fnil',
+        roman: 'froman',
+        swiss: 'fswiss',
+        fixed_pitch: 'fmodern',
+        script: 'fscript',
+        decorative: 'fdecor',
+        technical: 'ftech',
+        bidirectional: 'fbidi'
+    }
 
-    # 新细明体：PMingLiU
-    # 细明体：MingLiU
-    # 标楷体：DFKai-SB
-    # 黑体：SimHei
-    # 宋体：SimSun
-    # 新宋体：NSimSun
-    # 仿宋：FangSong
-    # 楷体：KaiTi
-    # 微软正黑体：Microsoft JhengHei
-    # 微软雅黑体：Microsoft YaHei
-    FAMILIES = [
+    CHARACTER_SET = {
+        ansi: 0,
+        default: 1,
+        symbol: 2,
+        invalid: 3,
+        mac: 77,
+        shiftJis: 128,
+        hangul: 129,
+        johab: 130,
+        gb2312: 134,
+        big5: 136,
+        greek: 161,
+        turkish: 162,
+        vietnamese: 163,
+        hebrew: 177,
+        arabic: 178,
+        arabicTraditional: 179,
+        arabic_user: 180,
+        hebrew_user: 181,
+        baltic: 186,
+        russian: 204,
+        thai: 222,
+        eastern_european: 238,
+        pc437: 254,
+        oem: 255
+    }
+
+    FONTS = [
+        {family:'fswiss', name:'Arial', character:0, prq:2},
+        {family:'froman', name:'Courier New', character:0, prq:1},
         {family:'froman', name:'Times New Roman', character:0, prq:2},
-        {family:'fnil', name:'KaiTi', character:0, prq:2},
-        {family:'fnil', name:'FangSong', character:0, prq:2},
+        {family:'fnil', name:'SimSun', character:134, prq:2},
+        {family:'fmodern', name:'KaiTi', character:134, prq:1},
+        {family:'fnil', name:'FangSong', character:134, prq:1},
+        {family:'fmodern', name:'SimHei', character:134, prq:1},
         {family:'fmodern', name:'NSimSun', character:134, prq:1},
         {family:'fswiss', name:'Microsoft YaHei', character:134, prq:2}
     ]
 
-
-
     attr_accessor :name, :num
-    def initialize(num, family, name, character_set = 0, prq = 2)
+    def initialize(num, name, family = 'fnil', character_set = 0, prq = 2)
       @num = num
       @family = family if family
       @name = name

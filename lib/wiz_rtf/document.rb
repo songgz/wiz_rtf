@@ -10,24 +10,18 @@ module WizRtf
       @fonts = []
       @colors = []
       @parts = []
-      font 'fswiss', 'Arial', 0, 2
-      font 'fmodern', 'Courier New', 0, 1
-      font 'fnil', '宋体', 2, 2
-      color 0, 0, 0
-      color 255, 0, 0
-      color 255, 0, 255
+      font 'Courier New'
       block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
     end
 
-    def head
-
+    def head(&block)
+      block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
     end
 
     def font(name, family = nil,  character_set = 0, prq = 2)
       unless index = @fonts.index {|f| f.name == name}
         index = @fonts.size
-        p name
-        p opts = WizRtf::Font::FAMILIES.detect {|f| f[:name] == name}
+        opts = WizRtf::Font::FONTS.detect {|f| f[:name] == name}
         @fonts << WizRtf::Font.new(index, opts[:name], opts[:family], opts[:character], opts[:prq])
       end
       index
