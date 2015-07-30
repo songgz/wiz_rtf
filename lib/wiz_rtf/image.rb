@@ -15,6 +15,8 @@ module WizRtf
 
     # This is the constructor for the Image class.
     # *  +file+ - image file path and filename.
+    # == Example:
+    # # WizRtf::Image.new('h:\eahey.png')
     def initialize(file)
       begin
         @img = IO.binread(file)
