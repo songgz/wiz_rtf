@@ -14,7 +14,7 @@ module WizRtf
     PIC_TYPE = {png: :pngblip, jpg: :jpegblip, bmp: :pngblip, gif: :pngblip}
 
     # This is the constructor for the Image class.
-    # +file+ - image file path and filename.
+    # *  +file+ - image file path and filename.
     def initialize(file)
       begin
         @img = IO.binread(file)
@@ -75,7 +75,7 @@ module WizRtf
     end
 
     # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
-    # +io+ - The Generic IO to Output the RTF Document.
+    # * +io+ - The Generic IO to Output the RTF Document.
     def render(io)
       io.group do
         io.cmd '*'

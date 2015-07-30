@@ -19,14 +19,14 @@ module WizRtf
     # * +font-italic+ - setting the value true for italic of the text.
     # * +font-underline+ - setting the value true for underline of the text.
     # == Example:
-    # WizRtf::Text.new("A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true)
+    # # WizRtf::Text.new("A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true)
     def initialize(str = '', styles = {})
       @str = str
       @styles = {'text-align' => :left, 'font-family' => 0, 'font-size' => 24, 'font-bold' => false, 'font-italic' => false, 'font-underline' => false, 'foreground-color' => 0, 'background-color' => 0 }.merge(styles)
     end
 
     # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
-    # +io+ - The Generic IO to Output the RTF Document.
+    # * +io+ - The Generic IO to Output the RTF Document.
     def render(io)
       io.group do
         io.cmd :pard

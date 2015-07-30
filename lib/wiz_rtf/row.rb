@@ -5,7 +5,13 @@
 # Copyright (C) 2015 by sgzhe@163.com
 
 module WizRtf
+
+  # =  Represents a table row.
   class Row
+
+    # This is the constructor for the Row class.
+    # * +table+ - A reference to table that owns the row.
+    # * +cells+ - The number of cells that the row will contain.
     def initialize(table, cells = [])
       @table = table
       @cells = []
@@ -16,6 +22,9 @@ module WizRtf
       end
     end
 
+    # add a Cell object to the Cells array.
+    # * +cell+ - a Cell object.
+    # * +merge+ - is merges the specified table cells.
     def add_cell(cell, merge = false)
       add_cell('', true) if !merge && row_spanned?(@col_offset)
 
@@ -49,6 +58,8 @@ module WizRtf
       @table.column_widths * 20
     end
 
+    # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
+    # * +io+ - The Generic IO to Output the RTF Document.
     def render(io)
       io.cmd :trowd
       io.cmd :trbrdrt
