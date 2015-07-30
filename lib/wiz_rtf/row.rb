@@ -6,7 +6,7 @@
 
 module WizRtf
 
-  # =  Represents a table row.
+  # = Represents a table row.
   class Row
 
     # This is the constructor for the Row class.

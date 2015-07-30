@@ -9,17 +9,19 @@ module WizRtf
   #
   # Creates a new Rtf document specifing the format of the pages.
   # == Example:
-  # # doc = WizRtf::Document.new do
-  # #   text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
-  # #   image('h:\eahey.png')
-  # #   page_break
-  # #   text "A Table Demo", 'foreground-color' => WizRtf::Color::RED, 'background-color' => '#0f00ff'
-  # #   table [[{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
-  # #          [{content:'4',rowspan:3,colspan:2},8],[11]], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
-  # #     add_row [1]
-  # #   end
-  # # end
-  # # doc.save('c:\text.rtf')
+  #
+  # doc = WizRtf::Document.new do
+  #   text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
+  #   image('h:\eahey.png')
+  #   page_break
+  #   text "A Table Demo", 'foreground-color' => WizRtf::Color::RED, 'background-color' => '#0f00ff'
+  #   table [[{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
+  #          [{content:'4',rowspan:3,colspan:2},8],[11]], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
+  #     add_row [1]
+  #   end
+  # end
+  # doc.save('c:\text.rtf')
+  #
   class Document
     def initialize(options = {}, &block)
       @fonts = []
@@ -98,7 +100,9 @@ module WizRtf
     # * +font-italic+ - setting the value true for italic of the text.
     # * +font-underline+ - setting the value true for underline of the text.
     # == Example:
-    # # text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
+    #
+    # text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
+    #
     def text(str, styles = {})
       styles['foreground-color'] = color(styles['foreground-color']) if styles['foreground-color']
       styles['background-color'] = color(styles['background-color']) if styles['background-color']
@@ -117,12 +121,14 @@ module WizRtf
     # == Options:
     # * +column_widths+ - sets the widths of the Columns.
     # == Example:
-    # # table [
-    # #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
-    # #     [{content:'4',rowspan:3,colspan:2},8],[11]
-    # #   ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
-    # #  add_row [1]
-    # # end
+    #
+    # table [
+    #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
+    #     [{content:'4',rowspan:3,colspan:2},8],[11]
+    #   ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
+    #  add_row [1]
+    # end
+    #
     def table(rows = [],options = {}, &block)
       @parts << WizRtf::Table.new(rows, options, &block)
     end
