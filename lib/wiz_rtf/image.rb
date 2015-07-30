@@ -5,10 +5,16 @@
 # Copyright (C) 2015 by sgzhe@163.com
 
 module WizRtf
+
+  # = Represents an image
+  # This class represents an image within a RTF document. Currently only the
+  # PNG, JPEG, GIF and Windows Bitmap formats are supported.
   class Image
     JPEG_SOF_BLOCKS = [0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF]
     PIC_TYPE = {png: :pngblip, jpg: :jpegblip, bmp: :pngblip, gif: :pngblip}
 
+    # This is the constructor for the Image class.
+    # <tt>:file</tt>:: image file path and filename.
     def initialize(file)
       begin
         @img = IO.binread(file)
@@ -18,6 +24,8 @@ module WizRtf
       end
     end
 
+    # Returns an symbol indicating the image type fetched from a image file.
+    # It will return nil if the image could not be fetched, or if the image type was not recognised.
     def type
       png = Regexp.new("\x89PNG".force_encoding("binary"))
       jpg = Regexp.new("\xff\xd8\xff\xe0\x00\x10JFIF".force_encoding("binary"))
@@ -35,10 +43,12 @@ module WizRtf
                 when /^BM/
                   :bmp
                 else
-                  :unknown
+                  nil
               end
     end
 
+    # Returns an array containing the width and height of the image.
+    # It will return nil if the image could not be fetched, or if the image type was not recognised.
     def size
       case self.type
         when :gif
@@ -64,6 +74,8 @@ module WizRtf
       end
     end
 
+    # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
+    # <tt>:io</tt>:: The Generic IO to Output the RTF Document.
     def render(io)
       io.group do
         io.cmd '*'

@@ -5,9 +5,16 @@
 # Copyright (C) 2015 by sgzhe@163.com
 
 module WizRtf
+
+  # Represents a table cell.
   class Cell
     attr_accessor :colspan, :rowspan, :content, :v_merge, :right_width
 
+    # This is the constructor for the Cell class.
+    # <tt>:cell</tt>::
+    #  - optional values:: number, string, symbol, hash.
+    # Example:
+    # WizRtf::Cell.new({content:'4', rowspan:3, colspan:2})
     def initialize(cell)
       if cell.is_a?(Hash)
         @colspan = cell[:colspan] || 1
@@ -20,6 +27,8 @@ module WizRtf
       end
     end
 
+    # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
+    # <tt>:io</tt>:: The Generic IO to Output the RTF Document.
     def render(io)
       io.cmd :celld
       io.cmd :clbrdrt

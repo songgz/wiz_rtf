@@ -6,7 +6,6 @@
 
 module WizRtf
   class Color
-
     RED = '#FF0000'
     YELLOW = '#FFFF00'
     LIME = '#00FF00'

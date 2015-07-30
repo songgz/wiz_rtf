@@ -5,8 +5,23 @@
 # Copyright (C) 2015 by sgzhe@163.com
 
 module WizRtf
+  # = Rtf Document
+  #
+  # Creates a new Rtf document specifing the format of the pages.
+  # For example:
+  # doc = WizRtf::Document.new do
+  #   text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
+  #   image('h:\eahey.png')
+  #   page_break
+  #   text "A Table Demo", 'foreground-color' => WizRtf::Color::RED, 'background-color' => '#0f00ff'
+  #   table [[{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
+  #          [{content:'4',rowspan:3,colspan:2},8],[11]], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
+  #     add_row [1]
+  #   end
+  # end
+  # doc.save('c:\text.rtf')
   class Document
-    def initialize(&block)
+    def initialize(options = {}, &block)
       @fonts = []
       @colors = []
       @parts = []
@@ -14,53 +29,8 @@ module WizRtf
       block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
     end
 
-    def head(&block)
-      block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
-    end
-
-    def font(name, family = nil,  character_set = 0, prq = 2)
-      unless index = @fonts.index {|f| f.name == name}
-        index = @fonts.size
-        opts = WizRtf::Font::FONTS.detect {|f| f[:name] == name}
-        @fonts << WizRtf::Font.new(index, opts[:name], opts[:family], opts[:character], opts[:prq])
-      end
-      index
-    end
-
-    def color(*rgb)
-      color = WizRtf::Color.new(*rgb)
-      if index = @colors.index {|c| c.to_rgb_hex == color.to_rgb_hex}
-        index += 1
-      else
-        @colors << color
-        index = @colors.size
-      end
-      index
-    end
-
-    def text(str, styles = {})
-      styles['foreground-color'] = color(styles['foreground-color']) if styles['foreground-color']
-      styles['background-color'] = color(styles['background-color']) if styles['background-color']
-      styles['font-family'] = font(styles['font-family']) if styles['font-family']
-      @parts << WizRtf::Text.new(str, styles)
-    end
-
-    def image(file)
-      @parts << WizRtf::Image.new(file)
-    end
-
-    def table(rows = [],options = {}, &block)
-      @parts << WizRtf::Table.new(rows, options, &block)
-    end
-
-    def line_break
-      @parts << WizRtf::Cmd.new(:par)
-    end
-
-    def page_break
-      @parts << WizRtf::Cmd.new(:page)
-    end
-
+    # Outputs the Complete Rtf Document to a Generic Stream as a Rich Text Format (RTF)
+    # <tt>:io</tt>:: The Generic IO to Output the RTF Document
     def render(io)
       io.group do
         io.cmd :rtf, 1
@@ -86,8 +56,89 @@ module WizRtf
       end
     end
 
+    # Outputs the complete Rtf Document to a file as a Rich Text Format (RTF)
+    # <tt>file</tt>:: file path
     def save(file)
       File.open(file, 'w') { |file| render(WizRtf::RtfIO.new(file)) }
+    end
+
+  private
+    def head(&block)
+      block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
+    end
+
+    # Sets the Font for the text.
+    def font(name, family = nil,  character_set = 0, prq = 2)
+      unless index = @fonts.index {|f| f.name == name}
+        index = @fonts.size
+        opts = WizRtf::Font::FONTS.detect {|f| f[:name] == name}
+        @fonts << WizRtf::Font.new(index, opts[:name], opts[:family], opts[:character], opts[:prq])
+      end
+      index
+    end
+
+    # Sets the color for the text.
+    def color(*rgb)
+      color = WizRtf::Color.new(*rgb)
+      if index = @colors.index {|c| c.to_rgb_hex == color.to_rgb_hex}
+        index += 1
+      else
+        @colors << color
+        index = @colors.size
+      end
+      index
+    end
+
+    # This will add a string of <tt>:str</tt> to the document, starting at the
+    # current drawing position.
+    # <tt>:options</tt>:: set the text alignment.
+    # * <tt>:text-align</tt>:: sets the horizontal alignment of the text.
+    #  - optional values:: <tt>:left</tt>, <tt>:center</tt>, <tt>:right</tt>
+    # * <tt>:font-family</tt>:: set the font family of the text.
+    #  - optional values::
+    # * <tt>:font-size</tt>:: set font size of the text.
+    # * <tt>:font-bold</tt>:: setting the value true for bold of the text.
+    # * <tt>:font-italic</tt>:: setting the value true for italic of the text.
+    # * <tt>:font-underline</tt>:: setting the value true for underline of the text.
+    # Example:
+    # text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
+    def text(str, styles = {})
+      styles['foreground-color'] = color(styles['foreground-color']) if styles['foreground-color']
+      styles['background-color'] = color(styles['background-color']) if styles['background-color']
+      styles['font-family'] = font(styles['font-family']) if styles['font-family']
+      @parts << WizRtf::Text.new(str, styles)
+    end
+
+    # Puts a image into the current position within the document.
+    # <tt>:file</tt>:: image file path and filename.
+    def image(file)
+      @parts << WizRtf::Image.new(file)
+    end
+
+    # Creates a new Table
+    # Options are:
+    # * <tt>:rows</tt> -  a table can be thought of as consisting of rows and columns.
+    # * <tt>:options</tt>::
+    # * <tt>column_widths</tt>:: sets the widths of the Columns.
+    # Example:
+    # table [
+    #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
+    #     [{content:'4',rowspan:3,colspan:2},8],[11]
+    #   ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
+    #  add_row [1]
+    # end
+    def table(rows = [],options = {}, &block)
+      @parts << WizRtf::Table.new(rows, options, &block)
+    end
+
+    # Writes a new line.
+    def line_break
+      @parts << WizRtf::Cmd.new(:par)
+    end
+
+    # Writes a page interruption (new page)
+    def page_break
+      @parts << WizRtf::Cmd.new(:page)
     end
 
   end
