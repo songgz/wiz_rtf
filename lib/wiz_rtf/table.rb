@@ -11,12 +11,10 @@ module WizRtf
     attr_accessor :row_spans, :column_widths
 
     # Creates a new Table
-    # Options are:
-    # * <tt>:rows</tt> -  a table can be thought of as consisting of rows and columns.
-    # * <tt>:options</tt>::
-    # * optional values::
-    # * <tt>column_widths</tt>:: sets the widths of the Columns.
-    # Example:
+    # * +rows+ - a table can be thought of as consisting of rows and columns.
+    # == Options:
+    # * +column_widths+ - sets the widths of the Columns.
+    # == Example:
     # WizRtf::Table.new([
     #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
     #     [{content:'4',rowspan:3,colspan:2},8],[11]
@@ -34,15 +32,15 @@ module WizRtf
     end
 
     # Add The Cells Array of the Row.
-    # * <tt>cells</tt>:: the cells array.
-    # Example:
+    # * +cells+ - the cells array.
+    # == Example:
     # add_row [{content:'4',rowspan:3,colspan:2},8]
     def add_row(cells = [])
       @rows << WizRtf::Row.new(self, cells)
     end
 
     # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
-    # <tt>:io</tt>:: The Generic IO to Output the RTF Document.
+    # +io+ - The Generic IO to Output the RTF Document.
     def render(io)
       @rows.each do |row|
         row.render(io)

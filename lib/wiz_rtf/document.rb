@@ -8,7 +8,7 @@ module WizRtf
   # = Rtf Document
   #
   # Creates a new Rtf document specifing the format of the pages.
-  # For example:
+  # == Example:
   # doc = WizRtf::Document.new do
   #   text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
   #   image('h:\eahey.png')
@@ -30,7 +30,7 @@ module WizRtf
     end
 
     # Outputs the Complete Rtf Document to a Generic Stream as a Rich Text Format (RTF)
-    # <tt>:io</tt>:: The Generic IO to Output the RTF Document
+    # +io+ - The Generic IO to Output the RTF Document
     def render(io)
       io.group do
         io.cmd :rtf, 1
@@ -57,12 +57,11 @@ module WizRtf
     end
 
     # Outputs the complete Rtf Document to a file as a Rich Text Format (RTF)
-    # <tt>file</tt>:: file path
+    # +file+ - file path and filename.
     def save(file)
       File.open(file, 'w') { |file| render(WizRtf::RtfIO.new(file)) }
     end
 
-  private
     def head(&block)
       block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
     end
@@ -89,18 +88,16 @@ module WizRtf
       index
     end
 
-    # This will add a string of <tt>:str</tt> to the document, starting at the
+    # This will add a string of +str+ to the document, starting at the
     # current drawing position.
-    # <tt>:options</tt>:: set the text alignment.
-    # * <tt>:text-align</tt>:: sets the horizontal alignment of the text.
-    #  - optional values:: <tt>:left</tt>, <tt>:center</tt>, <tt>:right</tt>
-    # * <tt>:font-family</tt>:: set the font family of the text.
-    #  - optional values::
-    # * <tt>:font-size</tt>:: set font size of the text.
-    # * <tt>:font-bold</tt>:: setting the value true for bold of the text.
-    # * <tt>:font-italic</tt>:: setting the value true for italic of the text.
-    # * <tt>:font-underline</tt>:: setting the value true for underline of the text.
-    # Example:
+    # == Styles:
+    # * +text-align+ - sets the horizontal alignment of the text. optional values: +:left+, +:center+, +:right+
+    # * +font-family+ - set the font family of the text. optional values:
+    # * +font-size+ - set font size of the text.
+    # * +font-bold+ - setting the value true for bold of the text.
+    # * +font-italic+ - setting the value true for italic of the text.
+    # * +font-underline+ - setting the value true for underline of the text.
+    # == Example:
     # text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
     def text(str, styles = {})
       styles['foreground-color'] = color(styles['foreground-color']) if styles['foreground-color']
@@ -110,17 +107,16 @@ module WizRtf
     end
 
     # Puts a image into the current position within the document.
-    # <tt>:file</tt>:: image file path and filename.
+    # +file+ - image file path and filename.
     def image(file)
       @parts << WizRtf::Image.new(file)
     end
 
     # Creates a new Table
-    # Options are:
-    # * <tt>:rows</tt> -  a table can be thought of as consisting of rows and columns.
-    # * <tt>:options</tt>::
-    # * <tt>column_widths</tt>:: sets the widths of the Columns.
-    # Example:
+    # * +rows+ -  a table can be thought of as consisting of rows and columns.
+    # == Options:
+    # * +column_widths+ - sets the widths of the Columns.
+    # == Example:
     # table [
     #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
     #     [{content:'4',rowspan:3,colspan:2},8],[11]
