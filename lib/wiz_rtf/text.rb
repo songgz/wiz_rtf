@@ -28,7 +28,7 @@ module WizRtf
     #
     def initialize(str = '', styles = {})
       @str = str
-      @styles = {'text-align' => :left, 'font-family' => 0, 'font-size' => 24, 'font-bold' => false, 'font-italic' => false, 'font-underline' => false, 'foreground-color' => 0, 'background-color' => 0 }.merge(styles)
+      @styles = {'text-align' => :left, 'font-family' => 0, 'font-size' => 12, 'font-bold' => false, 'font-italic' => false, 'font-underline' => false, 'foreground-color' => 0, 'background-color' => 0 }.merge(styles)
     end
 
     # Outputs the Partial Rtf Document to a Generic Stream as a Rich Text Format (RTF).
@@ -38,7 +38,7 @@ module WizRtf
         io.cmd :pard
         io.cmd TEXT_ALIGN_MAP[@styles['text-align']]
         io.cmd :f, @styles['font-family']
-        io.cmd :fs, @styles['font-size']
+        io.cmd :fs, @styles['font-size'] * 2
         io.cmd @styles['font-bold'] ? 'b' : 'b0'
         io.cmd @styles['font-italic'] ? 'i' : 'i0'
         io.cmd @styles['font-underline'] ? 'ul' : 'ulnone'

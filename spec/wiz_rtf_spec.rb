@@ -19,4 +19,16 @@ describe WizRtf do
     doc.save('c:\text.rtf')
   end
 
+  it 'is example of document for table' do
+    doc = WizRtf::Document.new do
+      text "学生成绩单", 'foreground-color' => WizRtf::Color::RED, 'text-align' => :center, 'font-size' => 24
+      table [
+                [{content:'姓名', rowspan:3},{content:'语文', colspan:5}],
+                ['期中','期末',{content:'平时', colspan:3}],
+                ['期中','期末','课堂','实践','作业']
+            ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50}
+    end
+    doc.save('c:\table.rtf')
+  end
+
 end
