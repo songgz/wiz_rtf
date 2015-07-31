@@ -6,7 +6,7 @@ describe WizRtf do
   end
 
   it 'is example of document ' do
-    doc = WizRtf::Document.new do
+    doc = WizRtf::Document.new default_font:'NSimSun' do
       text "学生综合素质报告", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
       image('h:\eahey.png')
       page_break
@@ -20,7 +20,7 @@ describe WizRtf do
   end
 
   it 'is example of document for table' do
-    doc = WizRtf::Document.new do
+    doc = WizRtf::Document.new default_font:'NSimSun' do
       text "学生成绩单", 'foreground-color' => WizRtf::Color::RED, 'text-align' => :center, 'font-size' => 24
       table [
                 [{content:'姓名', rowspan:3},{content:'语文', colspan:5}],

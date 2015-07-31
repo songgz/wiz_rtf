@@ -13,18 +13,20 @@ module WizRtf
     # creates a text of +str+ to the document.
     # == Styles:
     # * +text-align+ - sets the horizontal alignment of the text. optional values: +:left+, +:center+, +:right+
-    # * +font-family+ - set the font family of the text. optional values: 'Arial', 'Arial Black', 'Arial Narrow','Bitstream Vera Sans Mono',
-    #                   'Bitstream Vera Sans','Bitstream Vera Serif','Book Antiqua','Bookman Old Style','Castellar','Century Gothic',
-    #                   'Comic Sans MS','Courier New','Franklin Gothic Medium','Garamond','Georgia','Haettenschweiler','Impact','Lucida Console'
-    #                   'Lucida Sans Unicode','Microsoft Sans Serif','Monotype Corsiva','Palatino Linotype','Papyrus','Sylfaen','Symbol'
-    #                   'Tahoma','Times New Roman','Trebuchet MS','Verdana'.
+    # * +font-family+ - set the font family of the text.
+    #    - optional values:
+    #         'Arial', 'Arial Black', 'Arial Narrow','Bitstream Vera Sans Mono',
+    #         'Bitstream Vera Sans','Bitstream Vera Serif','Book Antiqua','Bookman Old Style','Castellar','Century Gothic',
+    #         'Comic Sans MS','Courier New','Franklin Gothic Medium','Garamond','Georgia','Haettenschweiler','Impact','Lucida Console'
+    #         'Lucida Sans Unicode','Microsoft Sans Serif','Monotype Corsiva','Palatino Linotype','Papyrus','Sylfaen','Symbol'
+    #         'Tahoma','Times New Roman','Trebuchet MS','Verdana'.
     # * +font-size+ - set font size of the text.
     # * +font-bold+ - setting the value true for bold of the text.
     # * +font-italic+ - setting the value true for italic of the text.
     # * +font-underline+ - setting the value true for underline of the text.
     # == Example:
     #
-    # WizRtf::Text.new("A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true)
+    #   WizRtf::Text.new("A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true)
     #
     def initialize(str = '', styles = {})
       @str = str

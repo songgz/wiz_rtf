@@ -17,7 +17,7 @@ module WizRtf
     # *  +file+ - image file path and filename.
     # == Example:
     #
-    # WizRtf::Image.new('h:\eahey.png')
+    #   WizRtf::Image.new('h:\eahey.png')
     #
     def initialize(file)
       begin

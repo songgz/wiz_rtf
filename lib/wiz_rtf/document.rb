@@ -10,7 +10,7 @@ module WizRtf
   # Creates a new Rtf document specifing the format of the pages.
   # == Example:
   #
-  #   doc = WizRtf::Document.new do
+  #   doc = WizRtf::Document.new default_font:'NSimSun' do
   #     text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
   #     image('h:\eahey.png')
   #     page_break
@@ -27,7 +27,7 @@ module WizRtf
       @fonts = []
       @colors = []
       @parts = []
-      font 'NSimSun'
+      font options[:default_font] || 'Arial'
       block.arity<1 ? self.instance_eval(&block) : block.call(self) if block_given?
     end
 
@@ -135,6 +135,10 @@ module WizRtf
 
     # Puts a image into the current position within the document.
     # * +file+ - image file path and filename.
+    # == Example:
+    #
+    #   image('h:\eahey.png')
+    #
     def image(file)
       @parts << WizRtf::Image.new(file)
     end

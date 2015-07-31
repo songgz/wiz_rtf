@@ -16,12 +16,12 @@ module WizRtf
     # * +column_widths+ - sets the widths of the Columns.
     # == Example:
     #
-    # WizRtf::Table.new([
-    #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
-    #     [{content:'4',rowspan:3,colspan:2},8],[11]
-    #   ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50}) do
-    #   add_row [1]
-    # end
+    #   WizRtf::Table.new([
+    #       [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
+    #       [{content:'4',rowspan:3,colspan:2},8],[11]
+    #     ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50}) do
+    #     add_row [1]
+    #   end
     #
     def initialize(rows = [], options = {}, &block)
       @rows = []
@@ -37,7 +37,7 @@ module WizRtf
     # * +cells+ - the cells array.
     # == Example:
     #
-    # add_row [{content:'4',rowspan:3,colspan:2},8]
+    #   add_row [{content:'4',rowspan:3,colspan:2},8]
     #
     def add_row(cells = [])
       @rows << WizRtf::Row.new(self, cells)

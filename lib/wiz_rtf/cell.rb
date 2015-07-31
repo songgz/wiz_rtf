@@ -14,7 +14,7 @@ module WizRtf
     # * +cell+ - optional values:: number, string, symbol, hash.
     # == Example:
     #
-    # WizRtf::Cell.new({content:'4', rowspan:3, colspan:2})
+    #   WizRtf::Cell.new({content:'4', rowspan:3, colspan:2})
     #
     def initialize(cell)
       if cell.is_a?(Hash)
