@@ -23,6 +23,8 @@ module WizRtf
     GRAY = '#808080'
     BLACK = '#000000'
 
+    attr_reader :red, :green, :blue
+
     def initialize(*rgb)
       case rgb.size
         when 1
@@ -48,14 +50,6 @@ module WizRtf
 
     def to_rgb_hex
       "#" + to_rgb.map {|c| "%02X" % c }.join
-    end
-
-    def render(io)
-      io.delimit do
-        io.cmd :red, @red
-        io.cmd :green, @green
-        io.cmd :blue, @blue
-      end
     end
 
   end

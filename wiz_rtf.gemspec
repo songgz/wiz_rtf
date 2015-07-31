@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["songgz"]
   spec.email         = ["sgzhe@163.com"]
 
-  spec.summary       = %q{A gem for exporting Word Documents in ruby using the Microsoft Rich Text Format (RTF) Specification.}
-  spec.description   = %q{A gem for rtf.}
+  spec.summary       = %q{A gem for creating RTF document.}
+  spec.description   = %q{A gem for exporting Word Documents in ruby using the Microsoft Rich Text Format (RTF) Specification.}
   spec.homepage      = "https://github.com/songgz/wiz_rtf"
   spec.license       = "MIT"
 

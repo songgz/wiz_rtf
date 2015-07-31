@@ -9,7 +9,7 @@ module WizRtf
   #
   # Creates a new Rtf document specifing the format of the pages.
   # == Example:
-  #
+  # ```ruby
   # doc = WizRtf::Document.new do
   #   text "A Example of Rtf Document", 'text-align' => :center, 'font-family' => 'Microsoft YaHei', 'font-size' => 48, 'font-bold' => true, 'font-italic' => true, 'font-underline' => true
   #   image('h:\eahey.png')
@@ -21,7 +21,7 @@ module WizRtf
   #   end
   # end
   # doc.save('c:\text.rtf')
-  #
+  # ```
   class Document
     def initialize(options = {}, &block)
       @fonts = []
@@ -41,15 +41,28 @@ module WizRtf
         io.cmd :deff, 0
         io.group do
           io.cmd :fonttbl
-          @fonts.each do |font|
-            font.render(io)
+          @fonts.each_with_index do |font, index|
+            io.group do
+              io.delimit do
+                io.cmd :f, index
+                io.cmd font.family
+                io.cmd :fprq, font.pitch
+                io.cmd :fcharset, font.character_set
+                io.write ' '
+                io.write font.name
+              end
+            end
           end
         end
         io.group do
           io.cmd :colortbl
           io.delimit
           @colors.each do |color|
-            color.render(io)
+            io.delimit do
+              io.cmd :red, color.red
+              io.cmd :green, color.green
+              io.cmd :blue, color.blue
+            end
           end
         end
         @parts.each do |part|
@@ -69,11 +82,15 @@ module WizRtf
     end
 
     # Sets the Font for the text.
-    def font(name, family = nil,  character_set = 0, prq = 2)
+    def font(name, family = nil,  character_set = 0, pitch = 2)
       unless index = @fonts.index {|f| f.name == name}
         index = @fonts.size
         opts = WizRtf::Font::FONTS.detect {|f| f[:name] == name}
-        @fonts << WizRtf::Font.new(index, opts[:name], opts[:family], opts[:character], opts[:prq])
+        if opts
+          @fonts << WizRtf::Font.new(opts[:name], opts[:family], opts[:character], opts[:pitch])
+        else
+          @fonts << WizRtf::Font.new(name, family, character_set, pitch)
+        end
       end
       index
     end
@@ -94,7 +111,11 @@ module WizRtf
     # current drawing position.
     # == Styles:
     # * +text-align+ - sets the horizontal alignment of the text. optional values: +:left+, +:center+, +:right+
-    # * +font-family+ - set the font family of the text. optional values:
+    # * +font-family+ - set the font family of the text. optional values: 'Arial', 'Arial Black', 'Arial Narrow','Bitstream Vera Sans Mono',
+    #                   'Bitstream Vera Sans','Bitstream Vera Serif','Book Antiqua','Bookman Old Style','Castellar','Century Gothic',
+    #                   'Comic Sans MS','Courier New','Franklin Gothic Medium','Garamond','Georgia','Haettenschweiler','Impact','Lucida Console'
+    #                   'Lucida Sans Unicode','Microsoft Sans Serif','Monotype Corsiva','Palatino Linotype','Papyrus','Sylfaen','Symbol'
+    #                   'Tahoma','Times New Roman','Trebuchet MS','Verdana'.
     # * +font-size+ - set font size of the text.
     # * +font-bold+ - setting the value true for bold of the text.
     # * +font-italic+ - setting the value true for italic of the text.
@@ -121,14 +142,14 @@ module WizRtf
     # == Options:
     # * +column_widths+ - sets the widths of the Columns.
     # == Example:
-    #
+    # ```ruby
     # table [
     #     [{content: WizRtf::Image.new('h:\eahey.png'),rowspan:4},{content:'4',rowspan:4},1,{content:'1',colspan:2}],
     #     [{content:'4',rowspan:3,colspan:2},8],[11]
     #   ], column_widths:{1=>100,2 => 100,3 => 50,4 => 50,5 => 50} do
     #  add_row [1]
     # end
-    #
+    # ```
     def table(rows = [],options = {}, &block)
       @parts << WizRtf::Table.new(rows, options, &block)
     end
